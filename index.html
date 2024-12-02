@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Music and Moving Text</title>
+    <style>
+        body {
+            margin: 0;
+            overflow: hidden;
+            background-color: black;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        button {
+            font-size: 20px;
+            padding: 10px 20px;
+            background-color: red;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        #movingText {
+            position: absolute;
+            font-size: 40px;
+            color: white;
+            font-weight: bold;
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <button id="startButton">Start</button>
+    <div id="movingText">F*** YOU</div>
+
+    <audio id="bgMusic" loop>
+        <source src="https://drive.google.com/uc?export=download&id=1c2mieZoLIlPJZXdpUF9M_BNl0sX55Q2s" type="audio/mpeg">
+        Your browser does not support the audio element.
+    </audio>
+
+    <script>
+        const button = document.getElementById("startButton");
+        const movingText = document.getElementById("movingText");
+        const bgMusic = document.getElementById("bgMusic");
+
+        let posX = Math.random() * window.innerWidth;
+        let posY = Math.random() * window.innerHeight;
+        let velocityX = 2;
+        let velocityY = 2;
+
+        button.addEventListener("click", () => {
+            // Play the background music
+            bgMusic.play();
+
+            // Hide the button
+            button.style.display = "none";
+
+            // Show and move the text
+            movingText.style.display = "block";
+            moveText();
+        });
+
+        function moveText() {
+            const textWidth = movingText.offsetWidth;
+            const textHeight = movingText.offsetHeight;
+
+            posX += velocityX;
+            posY += velocityY;
+
+            // Bounce off the walls
+            if (posX + textWidth >= window.innerWidth || posX <= 0) velocityX *= -1;
+            if (posY + textHeight >= window.innerHeight || posY <= 0) velocityY *= -1;
+
+            // Update position
+            movingText.style.left = posX + "px";
+            movingText.style.top = posY + "px";
+
+            requestAnimationFrame(moveText);
+        }
+
+        // Ensure text starts within screen bounds
+        movingText.style.position = "absolute";
+        movingText.style.left = posX + "px";
+        movingText.style.top = posY + "px";
+    </script>
+</body>
+</html>
